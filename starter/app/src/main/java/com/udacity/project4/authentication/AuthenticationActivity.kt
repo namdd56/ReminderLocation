@@ -92,6 +92,7 @@ class AuthenticationActivity : AppCompatActivity() {
                     startActivity(Intent(this, RemindersActivity::class.java))
                     finish()
                 }
+
                 LoginViewModel.AuthenticationState.UNAUTHENTICATED -> {
                     binding.buttonLogin.setOnClickListener {
                         launchSignInFlow()

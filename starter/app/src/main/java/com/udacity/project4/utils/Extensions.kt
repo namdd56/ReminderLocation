@@ -13,7 +13,7 @@ import com.udacity.project4.base.BaseRecyclerViewAdapter
  * Extension function to setup the RecyclerView.
  */
 fun <T> RecyclerView.setup(
-    adapter: BaseRecyclerViewAdapter<T>
+    adapter: BaseRecyclerViewAdapter<T>,
 ) {
     this.apply {
         layoutManager = LinearLayoutManager(this.context)

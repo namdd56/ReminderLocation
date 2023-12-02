@@ -7,19 +7,21 @@ import com.udacity.project4.locationreminders.data.dto.Result
 @Suppress("UNREACHABLE_CODE")
 class FakeDataSource : ReminderDataSource {
 
-//    TODO: Create a fake data source to act as a double to the real data source
+    //    TODO: Create a fake data source to act as a double to the real data source
     private var reminderDTOList = mutableListOf<ReminderDTO>()
-    private var returnError : Boolean = false
+    private var returnError: Boolean = false
 
     fun setReturnError(error: Boolean) {
         returnError = error
     }
+
     override suspend fun getReminders(): Result<List<ReminderDTO>> {
         TODO("Return the reminders")
         if (returnError) return Result.Error("ERROR")
         else {
             reminderDTOList.let { return Result.Success(ArrayList(it)) }
-            return Result.Error("Reminders not found"
+            return Result.Error(
+                "Reminders not found"
             )
         }
     }
@@ -34,8 +36,13 @@ class FakeDataSource : ReminderDataSource {
         return when {
             returnError -> Result.Error("error")
             else -> when (val reminder = reminderDTOList.find { it.id == id }) {
-                null -> { Result.Error("Not Found") }
-                else -> { Result.Success(reminder) }
+                null -> {
+                    Result.Error("Not Found")
+                }
+
+                else -> {
+                    Result.Success(reminder)
+                }
             }
         }
     }

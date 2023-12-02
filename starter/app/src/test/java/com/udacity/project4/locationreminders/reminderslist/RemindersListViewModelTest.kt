@@ -1,5 +1,6 @@
 package com.udacity.project4.locationreminders.reminderslist
 
+import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -9,7 +10,6 @@ import com.udacity.project4.locationreminders.data.dto.ReminderDTO
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.hamcrest.CoreMatchers.`is`
@@ -20,9 +20,11 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.stopKoin
+import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
 @ExperimentalCoroutinesApi
+@Config(maxSdk = Build.VERSION_CODES.TIRAMISU)
 class RemindersListViewModelTest {
 
     //TODO: provide testing to the RemindersListViewModel and its live data objects
@@ -40,7 +42,8 @@ class RemindersListViewModelTest {
     fun setUp() {
         stopKoin()
         fakeDataSource = FakeDataSource()
-        remindersListViewModel = RemindersListViewModel(ApplicationProvider.getApplicationContext(), fakeDataSource)
+        remindersListViewModel =
+            RemindersListViewModel(ApplicationProvider.getApplicationContext(), fakeDataSource)
     }
 
     @After
@@ -57,6 +60,7 @@ class RemindersListViewModelTest {
         remindersListViewModel.loadReminders()
         assertThat(remindersListViewModel.showSnackBar.value, `is`("Reminders not found"))
     }
+
     @Test
     fun test_deleteAllReminder() = runTest {
         remindersListViewModel.loadReminders()

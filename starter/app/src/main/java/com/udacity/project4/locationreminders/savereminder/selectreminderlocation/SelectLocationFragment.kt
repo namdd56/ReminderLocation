@@ -1,32 +1,31 @@
 package com.udacity.project4.locationreminders.savereminder.selectreminderlocation
 
+
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.location.Geocoder
+import android.os.Bundle
 import android.util.Log
+import android.view.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationSettingsRequest
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.material.snackbar.Snackbar
-
-
-import android.os.Bundle
-import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PointOfInterest
+import com.google.android.material.snackbar.Snackbar
 import com.udacity.project4.R
 import com.udacity.project4.base.BaseFragment
 import com.udacity.project4.databinding.FragmentSelectLocationBinding
@@ -42,12 +41,12 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     private lateinit var binding: FragmentSelectLocationBinding
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private var googleMap : GoogleMap? = null
+    private var googleMap: GoogleMap? = null
     private var currentPOI: PointOfInterest? = null
     private var marker: Marker? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
         val layoutId = R.layout.fragment_select_location
         binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
@@ -57,10 +56,12 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
 
         setHasOptionsMenu(true)
         setDisplayHomeAsUpEnabled(true)
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(requireContext())
 
         // TODO: add the map setup implementation
-        var mapFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
+        var mapFragment =
+            childFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         // TODO: call this function after the user confirms on the selected location
@@ -69,8 +70,9 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         }
         return binding.root
     }
+
     @SuppressLint("MissingPermission")
-    private fun zoonToUserLocation(){
+    private fun zoonToUserLocation() {
         val request = LocationRequest.create().apply {
             priority = LocationRequest.PRIORITY_LOW_POWER
         }
@@ -107,6 +109,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         }
 
     }
+
     @SuppressLint("MissingPermission")
     private val locationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -124,6 +127,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         }
 
     }
+
     @SuppressLint("MissingPermission")
     private fun checkLocationPermissions(): Boolean {
         return if (isPermissionGranted()) {
@@ -131,10 +135,12 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         } else {
             //TODO: Request Location permissions
             locationPermissionLauncher.launch(
-                Manifest.permission.ACCESS_FINE_LOCATION)
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
             false
         }
     }
+
     private fun isPermissionGranted(): Boolean {
         //TODO: Check if permission is already granted and return (true = granted, false = denied/other)
         return (ContextCompat.checkSelfPermission(
@@ -167,18 +173,22 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
             googleMap?.mapType = GoogleMap.MAP_TYPE_NORMAL
             true
         }
+
         R.id.hybrid_map -> {
             googleMap?.mapType = GoogleMap.MAP_TYPE_HYBRID
             true
         }
+
         R.id.satellite_map -> {
             googleMap?.mapType = GoogleMap.MAP_TYPE_SATELLITE
             true
         }
+
         R.id.terrain_map -> {
             googleMap?.mapType = GoogleMap.MAP_TYPE_TERRAIN
             true
         }
+
         else -> super.onOptionsItemSelected(item)
     }
 
@@ -186,12 +196,17 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         googleMap = p0
 
         // TODO: zoom to the user location after taking his permission
-        if(checkLocationPermissions()) {
+        if (checkLocationPermissions()) {
             zoonToUserLocation()
         }
 
         // TODO: add style to the map
-        googleMap?.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.map_style))
+        googleMap?.setMapStyle(
+            MapStyleOptions.loadRawResourceStyle(
+                requireContext(),
+                R.raw.map_style
+            )
+        )
 
         // TODO: put a marker to location that the user selected
         setMapClick(googleMap!!)
@@ -201,7 +216,11 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     private fun setMapClick(map: GoogleMap) {
         map.setOnMapClickListener { latLng ->
             // A Snippet is Additional text that's displayed below the title.
-            val addresses = Geocoder(requireContext(), Locale.getDefault()).getFromLocation(latLng.latitude, latLng.longitude, 1)
+            val addresses = Geocoder(requireContext(), Locale.getDefault()).getFromLocation(
+                latLng.latitude,
+                latLng.longitude,
+                1
+            )
                 ?: return@setOnMapClickListener
             if (addresses.isEmpty()) return@setOnMapClickListener
             val poi =

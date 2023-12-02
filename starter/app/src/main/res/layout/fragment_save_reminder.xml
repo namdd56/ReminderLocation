@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel" />
@@ -70,12 +71,12 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_normal"
             android:fadeVisible="@{!viewModel.showLoading.booleanValue()}"
+            android:importantForAccessibility="no"
             android:src="@drawable/ic_save"
             app:fabSize="normal"
             app:layout_anchorGravity="bottom|right|end"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:importantForAccessibility="no" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <ProgressBar
             android:id="@+id/progressBar"

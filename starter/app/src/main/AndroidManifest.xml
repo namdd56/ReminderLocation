@@ -32,7 +32,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".locationreminders.ReminderDescriptionActivity"
+        <activity
+            android:name=".locationreminders.ReminderDescriptionActivity"
             android:parentActivityName=".locationreminders.RemindersActivity" />
 
         <!--

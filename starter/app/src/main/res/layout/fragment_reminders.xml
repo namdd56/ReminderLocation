@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.udacity.project4.locationreminders.reminderslist.RemindersListViewModel" />
@@ -38,11 +39,11 @@
                 android:gravity="center"
                 android:text="@string/no_data"
                 android:textSize="@dimen/text_size_large"
+                app:drawableTopCompat="@drawable/ic_no_data"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:drawableTopCompat="@drawable/ic_no_data" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ProgressBar
                 android:id="@+id/progressBar"

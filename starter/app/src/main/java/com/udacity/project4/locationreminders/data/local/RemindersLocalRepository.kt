@@ -16,7 +16,7 @@ import kotlinx.coroutines.withContext
  */
 class RemindersLocalRepository(
     private val remindersDao: RemindersDao,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ReminderDataSource {
 
     /**

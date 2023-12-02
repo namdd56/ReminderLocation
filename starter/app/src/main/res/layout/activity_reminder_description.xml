@@ -39,21 +39,21 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@{reminderDataItem.title}"
-            tools:text="title"
             app:layout_constraintStart_toStartOf="@id/title_label"
-            app:layout_constraintTop_toBottomOf="@id/title_label"/>
+            app:layout_constraintTop_toBottomOf="@id/title_label"
+            tools:text="title" />
 
         <TextView
             android:id="@+id/description_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
             android:gravity="center"
             android:text="@string/reminder_desc"
             android:textSize="@dimen/text_size_large"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/title_field"
-            app:layout_constraintTop_toBottomOf="@id/title_field"
-            android:layout_marginTop="@dimen/margin_normal"/>
+            app:layout_constraintTop_toBottomOf="@id/title_field" />
 
         <TextView
             android:id="@+id/description_field"
@@ -61,21 +61,21 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@{reminderDataItem.description}"
-            tools:text="title desciption"
             app:layout_constraintStart_toStartOf="@id/description_label"
-            app:layout_constraintTop_toBottomOf="@id/description_label"/>
+            app:layout_constraintTop_toBottomOf="@id/description_label"
+            tools:text="title desciption" />
 
         <TextView
             android:id="@+id/location_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
             android:gravity="center"
             android:text="@string/reminder_location"
             android:textSize="@dimen/text_size_large"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/description_field"
-            app:layout_constraintTop_toBottomOf="@id/description_field"
-            android:layout_marginTop="@dimen/margin_normal"/>
+            app:layout_constraintTop_toBottomOf="@id/description_field" />
 
         <TextView
             android:id="@+id/location_field"
@@ -83,9 +83,9 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@{reminderDataItem.location}"
-            tools:text="location"
             app:layout_constraintStart_toStartOf="@id/location_label"
-            app:layout_constraintTop_toBottomOf="@id/location_label"/>
+            app:layout_constraintTop_toBottomOf="@id/location_label"
+            tools:text="location" />
 
         <TextView
             android:id="@+id/latlng_field"
@@ -93,8 +93,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@{@string/lat_long_snippet(reminderDataItem.latitude,reminderDataItem.longitude)}"
-            tools:text="Lat: XXX Lng: YYYY"
             app:layout_constraintStart_toStartOf="@id/location_field"
-            app:layout_constraintTop_toBottomOf="@id/location_field"/>
+            app:layout_constraintTop_toBottomOf="@id/location_field"
+            tools:text="Lat: XXX Lng: YYYY" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
