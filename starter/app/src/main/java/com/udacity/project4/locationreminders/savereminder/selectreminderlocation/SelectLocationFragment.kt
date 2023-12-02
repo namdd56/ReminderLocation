@@ -201,9 +201,11 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     private fun setMapClick(map: GoogleMap) {
         map.setOnMapClickListener { latLng ->
             // A Snippet is Additional text that's displayed below the title.
-            var  address = Geocoder(requireContext(), Locale.getDefault()).getFromLocation(latLng.latitude, latLng.longitude, 1)
+            val addresses = Geocoder(requireContext(), Locale.getDefault()).getFromLocation(latLng.latitude, latLng.longitude, 1)
+                ?: return@setOnMapClickListener
+            if (addresses.isEmpty()) return@setOnMapClickListener
             val poi =
-                address!![0]?.thoroughfare
+                addresses[0]?.featureName
                     ?.let { PointOfInterest(latLng, null.toString(), it) }
 
             marker?.remove()
