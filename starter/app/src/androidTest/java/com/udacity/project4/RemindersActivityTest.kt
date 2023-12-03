@@ -3,6 +3,7 @@ package com.udacity.project4
 import android.app.Application
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
+import androidx.test.espresso.Espresso.closeSoftKeyboard
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions
@@ -145,8 +146,12 @@ class RemindersActivityTest :
         onView(withId(R.id.addReminderFAB)).perform(click())
         onView(withId(R.id.reminderTitle)).perform(ViewActions.typeText(title))
         onView(withId(R.id.reminderDescription)).perform(ViewActions.typeText(description))
+        closeSoftKeyboard()
         onView(withId(R.id.saveReminder)).perform(click())
-        onView(withText(R.string.err_select_location)).check(matches(isDisplayed()))
+        runBlocking {
+            delay(2000)
+        }
+        onView(withId(com.google.android.material.R.id.snackbar_text)).check(matches(withText(R.string.err_select_location)))
         activityScenario.close()
     }
 
