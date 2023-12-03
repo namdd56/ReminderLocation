@@ -16,7 +16,7 @@ import kotlinx.coroutines.test.pauseDispatcher
 import kotlinx.coroutines.test.resumeDispatcher
 import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.`is`
+import org.hamcrest.CoreMatchers.`is`
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before
@@ -28,7 +28,7 @@ import org.robolectric.annotation.Config
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-@Config(maxSdk = Build.VERSION_CODES.TIRAMISU)
+@Config(maxSdk = Build.VERSION_CODES.P)
 class SaveReminderViewModelTest {
 
 
@@ -61,7 +61,7 @@ class SaveReminderViewModelTest {
     @Test
     fun test_validateReminders() = mainCoroutineRule.runBlockingTest {
         //GIVEN
-        val reminderData = ReminderDataItem("tite1", "description1", "location1", 23.45, 45.55, "1")
+        val reminderData = ReminderDataItem("title1", "description1", "location1", 23.45, 45.55, "1")
         mainCoroutineRule.pauseDispatcher()
         saveReminderViewModel.validateAndSaveReminder(reminderData)
         assertThat(saveReminderViewModel.showLoading.getOrAwaitValue(), `is`(true))
@@ -71,7 +71,7 @@ class SaveReminderViewModelTest {
 
     @Test
     fun test_saveReminder() {
-        val reminderData = ReminderDataItem("tite1", "description1", "location1", 23.45, 45.55, "1")
+        val reminderData = ReminderDataItem("title1", "description1", "location1", 23.45, 45.55, "1")
         saveReminderViewModel.saveReminder(reminderData)
 
         assertThat(saveReminderViewModel.showToast.getOrAwaitValue(), `is`(application.getString(R.string.reminder_saved)))

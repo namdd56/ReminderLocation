@@ -10,6 +10,7 @@ import com.udacity.project4.locationreminders.data.dto.ReminderDTO
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.hamcrest.CoreMatchers.`is`
@@ -24,7 +25,7 @@ import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
 @ExperimentalCoroutinesApi
-@Config(maxSdk = Build.VERSION_CODES.TIRAMISU)
+@Config(maxSdk = Build.VERSION_CODES.P)
 class RemindersListViewModelTest {
 
     //TODO: provide testing to the RemindersListViewModel and its live data objects
@@ -52,9 +53,9 @@ class RemindersListViewModelTest {
     }
 
     @Test
-    fun test_returnError() = runTest {
+    fun test_returnError() = mainCoroutineRule.runBlockingTest {
         fakeDataSource.setReturnError(true)
-        val reminderData = ReminderDTO("tite1", "description1", "location1", 23.45, 45.55, "1")
+        val reminderData = ReminderDTO("title1", "description1", "location1", 23.45, 45.55, "1")
         Dispatchers.setMain(StandardTestDispatcher())
         fakeDataSource.saveReminder(reminderData)
         remindersListViewModel.loadReminders()
@@ -62,7 +63,7 @@ class RemindersListViewModelTest {
     }
 
     @Test
-    fun test_deleteAllReminder() = runTest {
+    fun test_deleteAllReminder() = mainCoroutineRule.runBlockingTest {
         remindersListViewModel.loadReminders()
         fakeDataSource.deleteAllReminders()
         assertThat(remindersListViewModel.showNoData.value, `is`(true))
