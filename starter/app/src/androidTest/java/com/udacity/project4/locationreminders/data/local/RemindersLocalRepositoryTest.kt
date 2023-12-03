@@ -13,6 +13,7 @@ import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -36,7 +37,9 @@ class RemindersLocalRepositoryTest {
         remindersDatabase = Room.inMemoryDatabaseBuilder(
             ApplicationProvider.getApplicationContext(),
             RemindersDatabase::class.java
-        ).build()
+        )
+            .allowMainThreadQueries()
+            .build()
         repository = RemindersLocalRepository(remindersDatabase.reminderDao(), Dispatchers.Main)
     }
 
@@ -47,18 +50,18 @@ class RemindersLocalRepositoryTest {
     fun test_getReminder_returnSuccess() = runTest {
         var reminderData = ReminderDTO("title1", "description1", "location1", 23.45, 45.55, "1")
         repository.saveReminder(reminderData)
-        val result = repository.getReminder("1")
-        result as Result.Success
-        assertThat(result, `is`(true))
+        val retrieveReminder1: Result.Success<ReminderDTO> =
+            repository.getReminder(reminderData.id) as Result.Success
+        assertThat(retrieveReminder1.data, `is`(reminderData))
     }
 
     @Test
     fun test_getReminder_returnError() = runTest {
         var reminderData = ReminderDTO("title1", "description1", "location1", 23.45, 45.55, "1")
         repository.saveReminder(reminderData)
-        val result = repository.getReminder("2")
-        result as Result.Success
-        assertThat(result, `is`(false))
+        val result = repository.getReminder("2") as Result.Error
+
+        assertThat(result.message, `is`("Reminder not found!"))
     }
 }
 
