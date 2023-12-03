@@ -242,7 +242,7 @@ class SaveReminderFragment : BaseFragment() {
     private fun addGeofenceForClue() {
         if (!this::reminderDataItem.isInitialized) return
 
-        _viewModel.validateAndSaveReminder(reminderDataItem)
+        if (!_viewModel.validateAndSaveReminder(reminderDataItem)) return
 
         val currentReminderDataItem = reminderDataItem
         val geofence = Geofence.Builder()

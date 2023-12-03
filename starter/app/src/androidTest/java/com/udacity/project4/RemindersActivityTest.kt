@@ -68,7 +68,7 @@ class RemindersActivityTest :
                     get() as ReminderDataSource
                 )
             }
-            single { RemindersLocalRepository(get()) }
+            single { RemindersLocalRepository(get()) as ReminderDataSource }
             single { LocalDB.createRemindersDao(appContext) }
         }
         //declare a new koin module
@@ -134,6 +134,20 @@ class RemindersActivityTest :
         activityScenario.close()
 
 
+    }
+
+    @Test
+    fun test_showsSnackbar() {
+        val activityScenario = ActivityScenario.launch(RemindersActivity::class.java)
+        dataBindingIdlingResource.monitorActivity(activityScenario)
+        val title = "title1"
+        val description = "description1"
+        onView(withId(R.id.addReminderFAB)).perform(click())
+        onView(withId(R.id.reminderTitle)).perform(ViewActions.typeText(title))
+        onView(withId(R.id.reminderDescription)).perform(ViewActions.typeText(description))
+        onView(withId(R.id.saveReminder)).perform(click())
+        onView(withText(R.string.err_select_location)).check(matches(isDisplayed()))
+        activityScenario.close()
     }
 
 
