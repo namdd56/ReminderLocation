@@ -8,6 +8,7 @@ import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -154,12 +155,15 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         // TODO: When the user confirms on the selected location,
         //  send back the selected location details to the view model
         //  and navigate back to the previous fragment to save the reminder and add the geofence
-        currentPOI?.let {
-            _viewModel.reminderSelectedLocationStr.value = it.name
-            _viewModel.latitude.value = it.latLng.latitude
-            _viewModel.longitude.value = it.latLng.longitude
+        if (currentPOI != null) {
+            _viewModel.reminderSelectedLocationStr.value = currentPOI!!.name
+            _viewModel.latitude.value = currentPOI!!.latLng.latitude
+            _viewModel.longitude.value = currentPOI!!.latLng.longitude
+            findNavController().popBackStack()
+        } else {
+            Toast.makeText(context, resources.getString(R.string.select_location), Toast.LENGTH_SHORT).show()
         }
-        findNavController().popBackStack()
+
 
     }
 
