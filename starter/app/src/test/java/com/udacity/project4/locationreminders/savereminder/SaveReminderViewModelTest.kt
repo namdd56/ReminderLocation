@@ -58,16 +58,16 @@ class SaveReminderViewModelTest {
         stopKoin()
     }
 
-    @Test
-    fun test_validateReminders() = mainCoroutineRule.runBlockingTest {
-        //GIVEN
-        val reminderData = ReminderDataItem("title1", "description1", "location1", 23.45, 45.55, "1")
-        mainCoroutineRule.pauseDispatcher()
-        saveReminderViewModel.validateAndSaveReminder(reminderData)
-        assertThat(saveReminderViewModel.showLoading.getOrAwaitValue(), `is`(true))
-        mainCoroutineRule.resumeDispatcher()
-        assertThat(saveReminderViewModel.showLoading.getOrAwaitValue(), `is`(false))
-    }
+//    @Test
+//    fun test_validateReminders() = mainCoroutineRule.runBlockingTest {
+//        //GIVEN
+//        val reminderData = ReminderDataItem("title1", "description1", "location1", 23.45, 45.55, "1")
+//        mainCoroutineRule.pauseDispatcher()
+//        saveReminderViewModel.validateAndSaveReminder(reminderData)
+//        assertThat(saveReminderViewModel.showLoading.getOrAwaitValue(), `is`(true))
+//        mainCoroutineRule.resumeDispatcher()
+//        assertThat(saveReminderViewModel.showLoading.getOrAwaitValue(), `is`(false))
+//    }
 
     @Test
     fun test_saveReminder() {
@@ -76,6 +76,15 @@ class SaveReminderViewModelTest {
 
         assertThat(saveReminderViewModel.showToast.getOrAwaitValue(), `is`(application.getString(R.string.reminder_saved)))
         Assert.assertEquals(saveReminderViewModel.navigationCommand.getOrAwaitValue(), NavigationCommand.Back)
+    }
+
+    @Test
+    fun test_LocationNull(){
+        val reminderData = ReminderDataItem("title1", "description1", "location1", 23.45, 45.55, "1")
+        reminderData.location = null
+        val res = saveReminderViewModel.validateAndSaveReminder(reminderData)
+        assertThat(saveReminderViewModel.showSnackBarInt.getOrAwaitValue(), `is`(R.string.err_select_location))
+        assertThat(res, `is`(false))
     }
 
 

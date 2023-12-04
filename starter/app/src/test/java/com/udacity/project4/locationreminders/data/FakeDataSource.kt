@@ -18,7 +18,6 @@ class FakeDataSource : ReminderDataSource {
         if (returnError) return Result.Error("ERROR")
         else {
             reminderDTOList.let { return Result.Success(ArrayList(it)) }
-            return Result.Error("Reminders not found")
         }
     }
 

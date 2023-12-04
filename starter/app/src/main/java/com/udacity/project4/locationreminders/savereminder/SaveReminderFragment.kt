@@ -66,7 +66,7 @@ class SaveReminderFragment : BaseFragment() {
                 requireContext(),
                 0,
                 intent,
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
             )
         } else {
             PendingIntent.getBroadcast(
@@ -255,7 +255,7 @@ class SaveReminderFragment : BaseFragment() {
             .setExpirationDuration(TimeUnit.HOURS.toMillis(1))
             .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
             .build()
-        val geofenceRequest = GeofencingRequest.Builder()
+         val geofenceRequest = GeofencingRequest.Builder()
             .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
             .addGeofence(geofence)
             .build()
@@ -269,5 +269,11 @@ class SaveReminderFragment : BaseFragment() {
             }
         }
         _viewModel.onClear()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_TURN_DEVICE_LOCATION_ON)
+            checkDeviceLocationSettingsAndStartGeofence(false)
     }
 }
