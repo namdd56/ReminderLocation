@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import com.google.android.gms.common.api.ResolvableApiException
@@ -268,12 +269,6 @@ class SaveReminderFragment : BaseFragment() {
                 _viewModel.showSnackBarInt.value = R.string.error_adding_geofence
             }
         }
-        _viewModel.onClear()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_TURN_DEVICE_LOCATION_ON)
-            checkDeviceLocationSettingsAndStartGeofence(false)
+//        _viewModel.onClear()
     }
 }

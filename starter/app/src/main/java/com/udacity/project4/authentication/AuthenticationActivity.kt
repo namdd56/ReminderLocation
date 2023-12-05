@@ -1,20 +1,30 @@
 package com.udacity.project4.authentication
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.udacity.project4.R
 import com.udacity.project4.databinding.ActivityAuthenticationBinding
 import com.udacity.project4.locationreminders.RemindersActivity
+import com.udacity.project4.locationreminders.savereminder.SaveReminderFragment
 
 /**
  * This class should be the starting point of the app, It asks the users to sign in / register, and redirects the
@@ -29,6 +39,7 @@ class AuthenticationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAuthenticationBinding
     private val viewModel by viewModels<LoginViewModel>()
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_authentication)
@@ -39,6 +50,25 @@ class AuthenticationActivity : AppCompatActivity() {
         binding.buttonLogin.setOnClickListener {
             launchSignInFlow()
         }
+
+        when {
+            ContextCompat.checkSelfPermission(
+                this, Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                // You can use the API that requires the permission.
+                Log.e(TAG, "onCreate: PERMISSION GRANTED")
+            }
+            shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS) -> {
+
+            }
+            else -> {
+                // The registered ActivityResultCallback gets the result of this request
+                requestPermissionLauncher.launch(
+                    Manifest.permission.POST_NOTIFICATIONS
+                )
+            }
+        }
+
         // TODO: If the user was authenticated, send him to RemindersActivity
         observeAuthenticationState()
 
@@ -100,6 +130,19 @@ class AuthenticationActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            // Permission is granted. Continue the action or workflow in your
+            // app.
+            Log.e(TAG, "requestPermissionLauncher: PERMISSION GRANTED")
+        } else {
+            Toast.makeText(applicationContext,R.string.location_required_error,Toast.LENGTH_SHORT).show()
+        }
     }
 
 }
